@@ -8,19 +8,20 @@ import {
   UseGuards,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
+import { AuthService } from '@/auth/services/auth/auth.service';
+import { AuthGuard } from '@/auth/guards/auth/auth.guard';
 
-import { Public } from 'src/auth/auth.decorator';
+import { Public } from '@/auth/decorators/auth/auth.decorator';
 
-@Public()
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
+    console.log('here');
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 
