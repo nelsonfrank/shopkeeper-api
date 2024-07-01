@@ -12,17 +12,28 @@ import { AuthService } from '@/auth/services/auth/auth.service';
 import { AuthGuard } from '@/auth/guards/auth/auth.guard';
 
 import { Public } from '@/auth/decorators/auth/auth.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { SignInDto, SignUpDto } from '@/auth/dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService,
+  ) {}
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    console.log('here');
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  signIn(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto.email, signInDto.password);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('signup')
+  signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
   }
 
   @UseGuards(AuthGuard)

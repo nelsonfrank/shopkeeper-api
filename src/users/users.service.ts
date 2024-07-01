@@ -1,24 +1,43 @@
-import { Injectable } from '@nestjs/common';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findOne(id: number) {
+    return await this.userRepository.findOne({ where: { id: id } });
+  }
+
+  async findOneWithEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email: email } });
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const userFound = this.userRepository.findOne({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+
+    if (userFound) {
+      throw new BadRequestException('Email already exist!', {
+        cause: new Error(),
+        description: 'Email must be unique, try different email address',
+      });
+    }
+
+    const user = await this.userRepository.create(createUserDto);
+
+    await this.userRepository.save(user);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = user;
+    return result;
   }
 }
