@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker compose build --no-cache --force-rm
+      run: docker compose build --no-cache --force-rm app
       
  
 
@@ -81,8 +81,6 @@ jobs:
           script: |
             cd ~/shopkeeper-api 
             docker restart shopkeeper-db 
-            docker stop shopkeeper-api 
-            docker rm shopkeeper-api 
             docker pull nelsonfrank/shopkeeper-api:main 
             docker run -d --name shopkeeper-api --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
             docker restart shopkeeper-pgadmin4
