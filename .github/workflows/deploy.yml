@@ -80,22 +80,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/shopkeeper-api 
-            docker network create shopkeeper-network  
-            docker run -d \
-            --name shopkeeper-db \
-            --network shopkeeper-network \
-            -e POSTGRES_PASSWORD=postgres \
-            -v $(pwd)/pgdata:/var/lib/postgresql/data \
-            -p 5455:5432 postgres 
-            docker stop shopkeeper-api || true
-            docker rm shopkeeper-api || true
+            docker restart postgres 
+            docker stop shopkeeper-api 
+            docker rm shopkeeper-api 
             docker pull nelsonfrank/shopkeeper-api:main 
             docker run -d --name shopkeeper-api --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
-            docker run -d \
-            --name shopkeeper-pgadmin4 \
-            --network shopkeeper-network \
-            -e PGADMIN_DEFAULT_EMAIL=admin@admin.com \
-            -e PGADMIN_DEFAULT_PASSWORD=pgadmin4 \
-            -p 5050:80 \
-            dpage/pgadmin4
+            docker restart pgadmin4
 
