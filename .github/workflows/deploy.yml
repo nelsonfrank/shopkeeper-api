@@ -59,3 +59,26 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: push_to_registry
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Give GitHub Actions access to this repo
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/shopkeeper-api && 
+            
+            docker pull nelsonfrank/shopkeeper-api:main &&
+
+            docker run --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
+

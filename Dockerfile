@@ -12,4 +12,4 @@ COPY . .
 
 RUN pnpm run build
 
-CMD [ "pnpm", "run", "start:dev" ]
+CMD [ "pnpm", "run", "start:prod" ]
