@@ -80,10 +80,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/shopkeeper-api 
-            docker restart postgres 
+            docker restart shopkeeper-db 
             docker stop shopkeeper-api 
             docker rm shopkeeper-api 
             docker pull nelsonfrank/shopkeeper-api:main 
             docker run -d --name shopkeeper-api --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
-            docker restart pgadmin4
+            docker restart shopkeeper-pgadmin4
 
