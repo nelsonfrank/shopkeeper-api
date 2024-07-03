@@ -39,7 +39,7 @@ export class AuthController {
   }
 
   @Post('refresh')
-  async refrshToken(@Request() req) {
+  async refreshToken(@Request() req) {
     return this.authService.refreshToken(req.user);
   }
 }
