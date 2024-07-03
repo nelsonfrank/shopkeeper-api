@@ -10,3 +10,7 @@ export class SignInDto {
 }
 
 export class SignUpDto extends CreateUserDto {}
+
+export class UserDto extends CreateUserDto {
+  id: number;
+}

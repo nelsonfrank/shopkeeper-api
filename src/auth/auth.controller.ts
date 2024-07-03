@@ -8,25 +8,21 @@ import {
   UseGuards,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthService } from '@/auth/services/auth/auth.service';
-import { AuthGuard } from '@/auth/guards/auth/auth.guard';
+import { AuthService } from '@/auth/auth.service';
+import { AuthGuard } from '@/auth/guards/auth.guard';
 
-import { Public } from '@/auth/decorators/auth/auth.decorator';
-import { JwtService } from '@nestjs/jwt';
+import { Public } from '@/auth/decorators/auth.decorator';
 import { SignInDto, SignUpDto } from '@/auth/dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+    return this.authService.signIn(signInDto);
   }
 
   @Public()
@@ -40,5 +36,10 @@ export class AuthController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Post('refresh')
+  async refrshToken(@Request() req) {
+    return this.authService.refreshToken(req.user);
   }
 }

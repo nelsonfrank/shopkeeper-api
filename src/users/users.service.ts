@@ -19,14 +19,12 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    const userFound = this.userRepository.findOne({
-      where: {
-        email: createUserDto.email,
-      },
+    const foundUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
     });
 
-    if (userFound) {
-      throw new BadRequestException('Email already exist!', {
+    if (foundUser) {
+      throw new BadRequestException('Account already exist!', {
         cause: new Error(),
         description: 'Email must be unique, try different email address',
       });
