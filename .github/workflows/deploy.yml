@@ -85,7 +85,7 @@ jobs:
             -v $(pwd)/pgdata:/var/lib/postgresql/data \
             -p 5455:5432 postgres 
             docker pull nelsonfrank/shopkeeper-api:main 
-            docker run --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
+            docker run -d --name shopkeeper-api --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
             docker run -d \
             --name shopkeeper-pgadmin4 \
             --network shopkeeper-network \
