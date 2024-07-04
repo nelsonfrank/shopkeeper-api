@@ -79,9 +79,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/shopkeeper-api 
-            docker restart shopkeeper-db 
-            docker pull nelsonfrank/shopkeeper-api:main 
-            docker run -d --name shopkeeper-api --rm -p 3001:3001 nelsonfrank/shopkeeper-api:main 
-            docker restart shopkeeper-pgadmin4
-
+            cd ~/shopkeeper/shopkeeper-api 
+            docker pull nelsonfrank/shopkeeper-api:main
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
