@@ -13,9 +13,7 @@ services:
       - '5455:5432'
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: nelsonfrank/shopkeeper-api:main
     container_name: shopkeeper-api
     environment:
       - PORT=${PORT}
