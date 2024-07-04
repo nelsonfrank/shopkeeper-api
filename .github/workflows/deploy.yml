@@ -80,5 +80,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/shopkeeper/shopkeeper-api 
+            git pull origin main
             docker pull nelsonfrank/shopkeeper-api:main
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
