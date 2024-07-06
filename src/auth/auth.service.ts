@@ -40,7 +40,9 @@ export class AuthService {
 
     return {
       access_token: await this.jwtService.signAsync(payload),
-      refreshToken: this.jwtService.signAsync(payload, { expiresIn: '7d' }),
+      refreshToken: await this.jwtService.signAsync(payload, {
+        expiresIn: '7d',
+      }),
     };
   }
 
