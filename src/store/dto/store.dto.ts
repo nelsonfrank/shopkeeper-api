@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateStoreDto {
   @IsString()
@@ -7,6 +7,9 @@ export class CreateStoreDto {
 
   @IsString()
   storeAddress: string;
+
+  @IsNumber()
+  owner: number;
 }
 
 export class UpdateStoreDto extends PartialType(CreateStoreDto) {}

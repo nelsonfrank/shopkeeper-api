@@ -1,6 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
+import { Store } from '@/store/entities/store.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -20,7 +28,11 @@ export class User {
   isActive: boolean;
 
   @Column({ nullable: false })
+  @Exclude()
   password: string;
+
+  @OneToMany(() => Store, (store) => store.storeOwner)
+  stores: Store[];
 
   @BeforeInsert()
   async hashPasword() {

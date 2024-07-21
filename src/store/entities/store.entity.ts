@@ -1,25 +1,18 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  OneToOne,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '@/users/entities/user.entity';
 
 @Entity()
-export class User {
+export class Store {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   storeName: string;
 
   @Column({ nullable: true })
   storeAddress: string;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  @Column({ nullable: false })
+  @ManyToOne(() => User, (user) => user.stores, { nullable: false })
   storeOwner: User;
 
   @Column({ default: true })
